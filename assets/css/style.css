@@ -3,7 +3,7 @@
 :root {
   --bg: #F5F4EB;
   --ink: #5C5651;        /* headings */
-  --text: #765e40;       /* body copy, links, accents (brand #917550 darkened to pass WCAG AA) */
+  --text: #917550;       /* body copy, links, accents */
   --gold: #B58D56;
   --card: #E2E0D8;
   --line: #917550;
@@ -13,10 +13,7 @@
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   --maxw: 1104px;
   --gutter: 24px;
-  --nav-h: 72px;
-  --r-lg: 16px;   /* shape rule: containers and media 16px, inputs 10px, buttons full pill */
-  --r-sm: 10px;
-  --z-nav: 40; --z-top: 30; --z-menu: 60; --z-lightbox: 80; --z-skip: 90;
+  --nav-h: 96px;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   color-scheme: light;
 }
@@ -322,7 +319,7 @@ strong, b { font-weight: 700; }
   position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 30;
   width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--text);
   background: var(--bg); color: var(--text); cursor: pointer; display: grid; place-items: center;
-  opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity .2s ease-in-out, transform .2s ease-in-out, visibility .2s;
+  opacity: 0; visibility: hidden; transform: translateY(8px); transition: .2s ease-in-out;
 }
 .to-top.show { opacity: 1; visibility: visible; transform: none; }
 .to-top:hover { color: var(--ink); border-color: var(--ink); }
@@ -459,102 +456,3 @@ figure.media { margin: 0; } .caption { font-size: 14px; margin-top: 12px; }
 .rich a.btn { color: var(--on-accent); text-decoration: none; }
 .rich a.btn--outline { color: var(--text); }
 .rich a.btn--outline:hover { color: var(--ink); }
-
-/* =========================================================
-   Taste pass: preserve Lily's brand (cream, warm brown, Gambetta + Inter),
-   tighten hierarchy, one light theme, one shape rule, full interaction states.
-   ========================================================= */
-
-/* Type: tighter display tracking, readable measure, no orphans */
-h1, h2, h3 { letter-spacing: -0.015em; }
-.home-hero h1, .cs-hero h1, .cs-hero .rich h2 { letter-spacing: -0.025em; }
-p, li { text-wrap: pretty; }
-.rich p, .rich li, .rich ul, .rich ol { max-width: 70ch; }
-.rich.align-center p, .rich.align-center ul, .rich.align-center ol { margin-inline: auto; }
-
-/* Skip link */
-.skip-link { position: absolute; left: 16px; top: -60px; z-index: var(--z-skip); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: var(--r-sm); text-decoration: none; transition: top .2s var(--ease); }
-.skip-link:focus { top: 12px; }
-main:focus { outline: none; }
-
-/* Buttons: tactile press, named transitions */
-.btn { transition: color .2s var(--ease), background-color .2s var(--ease), border-color .2s var(--ease), transform .15s var(--ease); }
-.btn:active, .text-link:active, .step:active, .project:active { transform: scale(0.98); }
-.btn--lg { font-size: 16px; padding: 12px 26px; }
-.text-link { color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; transition: color .2s var(--ease); display: inline-block; }
-.text-link:hover { color: var(--text); }
-
-/* Hero: left-aligned split with a real photo, fits the first screen */
-.home-hero { text-align: left; padding: calc(var(--nav-h) + 24px) 0 64px; }
-.hero-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(32px, 6vw, 80px); align-items: center; }
-.home-hero h1 { font-size: clamp(44px, 6.4vw, 76px); line-height: 1.05; margin-bottom: 12px; }
-.home-hero h2 { font-size: clamp(26px, 3.2vw, 40px); line-height: 1.15; margin-bottom: 20px; color: var(--ink); }
-.home-hero p { margin: 0 0 28px; max-width: 46ch; font-size: 18px; }
-.hero-ctas { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-.hero-photo { margin: 0; justify-self: end; width: 100%; max-width: 420px; }
-.hero-photo img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 70%; border-radius: var(--r-lg); box-shadow: 0 24px 50px rgba(92, 70, 40, .18); }
-@media (max-width: 767px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 32px; }
-  .hero-photo { justify-self: start; max-width: 100%; }
-  .hero-photo img { aspect-ratio: 4 / 3; object-position: 50% 62%; }
-}
-
-/* Section heads in sentence case, no shouting caps */
-.projects-head h2 { font-weight: 600; text-transform: none; }
-
-/* Project cards: no box, the media carries the weight */
-.project { border: 0; border-radius: 0; padding: 0; background: none; }
-.project:hover { background: none; }
-.project-media { border-radius: var(--r-lg); }
-.project:hover .project-media .stage { transform: scale(1.025); }
-.project-info { padding: 24px 0 8px; }
-.project-info h3 { margin: 6px 0 10px; }
-.meta-row { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 4px 18px; }
-.meta-row li { border: 0; padding: 0; border-radius: 0; font-size: 14px; color: var(--text); }
-.meta-row li:first-child { color: var(--ink); font-weight: 600; }
-.more { display: inline-block; margin-top: 14px; color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
-.projects { gap: 72px; }
-.projects--earlier { gap: 40px; }
-@media (max-width: 600px) { .project { padding: 0; } .project-info { padding: 18px 0 4px; } .projects { gap: 48px; } }
-
-/* Designing for AI: heading column + list, not a card grid */
-.ai-section { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px clamp(32px, 5vw, 72px); padding-block: 40px 88px; align-items: start; }
-.ai-section .section-intro { position: sticky; top: calc(var(--nav-h) + 16px); margin: 0; }
-.patterns { list-style: none; margin: 0; padding: 0; display: grid; gap: 40px; }
-.pattern { background: none; border-radius: 0; padding: 0 0 0 24px; border-left: 2px solid var(--card); display: block; margin: 0; }
-.pattern h3 { font-size: 26px; margin-bottom: 10px; }
-.pattern p { font-size: 16px; max-width: 62ch; }
-.pattern-links { display: flex; gap: 20px; flex-wrap: wrap; }
-.pattern-links a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; font-weight: 600; }
-@media (max-width: 767px) { .ai-section { grid-template-columns: 1fr; } .ai-section .section-intro { position: static; } }
-
-/* One theme per page: brown bands become a tint of the same light palette */
-.sec.tint { color: var(--text); }
-.sec.tint .rich, .sec.tint h1, .sec.tint h2, .sec.tint h3, .sec.tint h4 { color: var(--ink); }
-.sec.tint .pc5 { color: var(--ink); }
-.sec.tint .card { background: var(--bg); }
-.sec.tint .marquee-track { color: var(--ink); }
-
-/* Shape rule */
-.card, .mock, .glance-facts, .browser-frame, .about-photo { border-radius: var(--r-lg); }
-.field input, .field textarea { border-radius: var(--r-sm); border-color: color-mix(in srgb, var(--text) 45%, transparent); }
-
-/* Case-study hero sits closer to the nav */
-.cs-hero { padding-top: calc(var(--nav-h) + 24px); min-height: 0; padding-bottom: 48px; }
-
-/* Keyboard access for zoomable images */
-img.zoom:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
-
-/* Form errors */
-.field-error { margin: 0; min-height: 0; font-size: 14px; color: #9b3b2c; }
-.field-error:empty { display: none; }
-.field input[aria-invalid="true"], .field textarea[aria-invalid="true"] { border-color: #9b3b2c; }
-
-/* 404 */
-.nf { padding: calc(var(--nav-h) + 64px) 0 96px; }
-.nf h1 { font-size: clamp(36px, 5vw, 56px); }
-.nf p { max-width: 52ch; margin-bottom: 28px; }
-
-/* Layering scale */
-.nav { z-index: var(--z-nav); } .overlay { z-index: var(--z-menu); } .to-top { z-index: var(--z-top); } .lightbox { z-index: var(--z-lightbox); }
-.patterns { grid-template-columns: minmax(0, 1fr); }

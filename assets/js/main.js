@@ -80,55 +80,35 @@
   lb.innerHTML = '<img alt="">';
   document.body.appendChild(lb);
   var lbImg = lb.querySelector('img');
-  var lastFocus = null;
-  function closeLightbox() { if (!lb.classList.contains('open')) return; lb.classList.remove('open'); if (lastFocus) lastFocus.focus(); }
-  function openLightbox(img) { lastFocus = img; lbImg.src = img.currentSrc || img.src; lbImg.alt = img.alt || ''; lb.classList.add('open'); }
-  document.addEventListener('keydown', function (e) {
-    var img = e.target.closest && e.target.closest('img.zoom');
-    if (img && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openLightbox(img); }
-  });
+  function closeLightbox() { lb.classList.remove('open'); }
   lb.addEventListener('click', closeLightbox);
   document.addEventListener('click', function (e) {
     var img = e.target.closest('.zoom');
     if (!img || img.closest('.tilted')) return;
-    openLightbox(img);
+    lbImg.src = img.currentSrc || img.src;
+    lbImg.alt = img.alt || '';
+    lb.classList.add('open');
   });
 
-  // Scroll to top: shown once the hero has left the screen (no window scroll listener)
+  // Scroll to top
   var top = document.querySelector('.to-top');
-  var hero = document.querySelector('.home-hero, .cs-hero, .about, .contact, .nf');
   if (top) {
+    window.addEventListener('scroll', function () { top.classList.toggle('show', window.scrollY > 900); }, { passive: true });
     top.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
-    if (hero && 'IntersectionObserver' in window) {
-      new IntersectionObserver(function (en) { top.classList.toggle('show', !en[0].isIntersecting); }).observe(hero);
-    }
   }
 
-  // Contact form: inline validation, then opens the visitor's email app with the message filled in
+  // Contact form: opens the visitor's email app with the message filled in
   var form = document.getElementById('contact-form');
   if (form) {
-    function setError(field, msg) {
-      var el = document.getElementById(field.id + '-error');
-      field.setAttribute('aria-invalid', msg ? 'true' : 'false');
-      if (el) el.textContent = msg || '';
-    }
-    form.email.addEventListener('blur', function () {
-      if (form.email.value.trim()) setError(form.email, form.email.validity.valid ? '' : 'Enter an email address like name@example.com.');
-    });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var email = form.email.value.trim(), name = form.name.value.trim(), msg = form.message.value.trim();
       var note = form.querySelector('.form-note');
-      var ok = true;
-      if (!email) { setError(form.email, 'Add your email so Lily can reply.'); ok = false; }
-      else if (!form.email.validity.valid) { setError(form.email, 'Enter an email address like name@example.com.'); ok = false; }
-      else setError(form.email, '');
-      if (!msg) { setError(form.message, 'Write a short message.'); ok = false; } else setError(form.message, '');
-      if (!ok) { note.textContent = ''; (form.querySelector('[aria-invalid="true"]') || form.email).focus(); return; }
+      if (!email || !msg) { note.textContent = 'Please add your email and a message.'; return; }
       var subject = encodeURIComponent('Portfolio inquiry' + (name ? ' from ' + name : ''));
       var body = encodeURIComponent(msg + '\n\n' + (name ? name + '\n' : '') + email);
       window.location.href = 'mailto:lillyshaker99@gmail.com?subject=' + subject + '&body=' + body;
-      note.textContent = 'Your email app should open with the message ready to send. If it does not, write to lillyshaker99@gmail.com.';
+      note.textContent = 'Your email app should open with the message ready to send.';
     });
   }
 })();
